@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  node1:
+    build: .
+    container_name: ledger-node1
+    # 将容器内的端口映射到宿主机，方便你用宿主机的 wallet 客户端测试
+    ports:
+      - "8081:8081"
+      - "7001:7001"
+    # 这里传入你平时在命令行手敲的参数
+    command: ["-id=node1", "-http=8081", "-raft=7001"]
+    # 将数据目录挂载出来，防止容器销毁后数据丢失
+    volumes:
+      - ./data/node1:/app/data/node1
+    networks:
+      - raft-net
+
+  node2:
+    build: .
+    container_name: ledger-node2
+    ports:
+      - "8082:8082"
+      - "7002:7002"
+    command: ["-id=node2", "-http=8082", "-raft=7002"]
+    volumes:
+      - ./data/node2:/app/data/node2
+    networks:
+      - raft-net
+
+  node3:
+    build: .
+    container_name: ledger-node3
+    ports:
+      - "8083:8083"
+      - "7003:7003"
+    command: ["-id=node3", "-http=8083", "-raft=7003"]
+    volumes:
+      - ./data/node3:/app/data/node3
+    networks:
+      - raft-net
+
+# 创建一个自定义网桥，让 3 个节点可以通过 node1, node2, node3 的名字互相通信
+networks:
+  raft-net:
+    driver: bridge

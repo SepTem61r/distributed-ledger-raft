@@ -1,0 +1,16 @@
+# 编译生成的可执行文件
+ledger-node
+ledger-node.exe
+wallet
+wallet.exe
+
+# Raft 产生的本地数据库和日志文件
+/data/
+*.db
+*.snap
+
+# Go 语言常见的忽略项
+/vendor/
+.idea/
+.vscode/
+*.out
